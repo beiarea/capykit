@@ -1,8 +1,28 @@
 #!/bin/bash
+
+set -e
+
+echo "xvfb-daemon-run | Entering..."
+
 export DISPLAY=:99
+
+echo "xvfb-daemon-run | Starting xvfb..."
 /etc/init.d/xvfb start
+echo "xvfb-daemon-run | Started(?)."
+
+echo "xvfb-daemon-run | Sleeping..." # Why? Waiting for xvfb to start?
 sleep 1
-$@
+echo "xvfb-daemon-run | Woke."
+
+echo "xvfb-daemon-run | Executing command '$@'..."
+# Was just $@
+eval "$@"
 exit_value=$?
+echo "xvfb-daemon-run | Command '$@' exited with status ${exit_value}."
+
+echo "xvfb-daemon-run | Stopping xvfb..."
 /etc/init.d/xvfb stop
+echo "xvfb-daemon-run | xvfb stopped."
+
+echo "xvfb-daemon-run | Exiting with code ${exit_value}."
 exit $exit_value
