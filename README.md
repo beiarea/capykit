@@ -1,4 +1,4 @@
-beiarea/chrapy-wangkit
+beiarea/capykit
 ==============================================================================
 
 If you ever wanted to run Chrome inside of Ruby inside of Docker inside of Linux inside your MacBook... you get the idea.
