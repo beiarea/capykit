@@ -19,7 +19,7 @@
 # [build args]: https://docs.docker.com/engine/reference/builder/#arg
 # 
 
-# Expose `FROM` as an optional `FROM_IMAGE` build arg, allowing you to specify
+# Expose `FROM` as an optional `from_image` build arg, allowing you to specify
 # the base image at build.
 # 
 # This is useful because we have a base image for each project providing basic
@@ -30,8 +30,8 @@
 # 
 # @maxwellhealth was at `ruby:2.2.1` when we forked.
 # 
-ARG FROM_IMAGE="ruby:2.3.4"
-FROM "${FROM_IMAGE}"
+ARG from_image="ruby:2.3.4"
+FROM "${from_image}"
 
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -47,8 +47,8 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 # 
 # Examples: "US/Eastern", "Asia/Shanghai", "Etc/UTC"
 # 
-ARG TIMEZONE="Etc/UTC"
-RUN echo "${TIMEZONE}" > /etc/timezone && \
+ARG timezone="Etc/UTC"
+RUN echo "${timezone}" > /etc/timezone && \
     dpkg-reconfigure --frontend noninteractive tzdata
 
 
@@ -76,18 +76,18 @@ RUN apt-get update -y \
 # 
 # Example: "2.21"
 # 
-ARG CHROMEDRIVER_VERSION="2.21"
-RUN mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION \
+ARG chromedriver_version="2.21"
+RUN mkdir -p "/opt/chromedriver-${chromedriver_version}" \
     && curl -sS -o \
         /tmp/chromedriver_linux64.zip \
-        http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
+        "http://chromedriver.storage.googleapis.com/${chromedriver_version}/chromedriver_linux64.zip" \
     && unzip -qq \
         /tmp/chromedriver_linux64.zip \
-        -d /opt/chromedriver-$CHROMEDRIVER_VERSION \
+        -d "/opt/chromedriver-${chromedriver_version}" \
     && rm /tmp/chromedriver_linux64.zip \
-    && chmod +x /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver \
+    && chmod +x "/opt/chromedriver-${chromedriver_version}/chromedriver" \
     && ln -fs \
-        /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver \
+        "/opt/chromedriver-${chromedriver_version}/chromedriver" \
         /usr/local/bin/chromedriver
 
 
@@ -124,24 +124,24 @@ RUN dpkg-divert --add --rename --divert \
 # `DISPLAY` was :20.0 but seems to need to match value in `xvfb-daemon-run`, 
 # which is `:99`, so think this should be `:99.0`, which I've seen in some
 # examples online.
-ARG DISPLAY=":99.0"
+ARG display=":99.0"
 
-ARG SCREEN_GEOMETRY="1440x900x24"
+ARG screen_geometry="1440x900x24"
 
-ARG CHROMEDRIVER_PORT="4444"
+ARG chromedriver_port="4444"
 
-ARG CHROMEDRIVER_WHITELISTED_IPS="127.0.0.1"
+ARG chromedriver_whitelisted_ips="127.0.0.1"
 
 # Set working directory to canonical directory
-ARG WORKDIR="/usr/src/app"
-WORKDIR "${WORKDIR}"
+ARG workdir="/usr/src/app"
+WORKDIR "${workdir}"
 
 # Bind the args to env vars.
-ENV WORKDIR="${WORKDIR}" \
-    DISPLAY="${DISPLAY}" \
-    SCREEN_GEOMETRY="${SCREEN_GEOMETRY}" \
-    CHROMEDRIVER_PORT="${CHROMEDRIVER_PORT}" \
-    CHROMEDRIVER_WHITELISTED_IPS="${CHROMEDRIVER_WHITELISTED_IPS}"
+ENV WORKDIR="${workdir}" \
+    DISPLAY="${display}" \
+    SCREEN_GEOMETRY="${screen_geometry}" \
+    CHROMEDRIVER_PORT="${chromedriver_port}" \
+    CHROMEDRIVER_WHITELISTED_IPS="${chromedriver_whitelisted_ips}"
 
 
 # Adds ability to run xvfb in daemonized mode
