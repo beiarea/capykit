@@ -2,27 +2,39 @@
 
 set -e
 
-echo "xvfb-daemon-run | Entering..."
+function echo_log {
+  echo "[$(basename $0)] $1"
+}
+
+echo_log "Entering..."
 
 export DISPLAY=:99
 
-echo "xvfb-daemon-run | Starting xvfb..."
+# Seems like previous runs in the container that did not shut down properly
+# can leave `/var/xvfb_*.pid` files that will silently prevent the server 
+# from starting up on the next run.
+# 
+echo_log "Clearing out any left-over /var/xvfb_*.pid files..."
+rm -rf /var/xvfb_*.pid
+echo "  Done."
+
+echo_log "Starting xvfb..."
 /etc/init.d/xvfb start
-echo "xvfb-daemon-run | Started(?)."
+echo_log "Started(?)."
 
-echo "xvfb-daemon-run | Sleeping..." # Why? Waiting for xvfb to start?
+echo_log "Sleeping..." # Why? Waiting for xvfb to start?
 sleep 1
-echo "xvfb-daemon-run | Woke."
+echo_log "Woke."
 
-echo "xvfb-daemon-run | Executing command '$@'..."
+echo_log "Executing command '$@'..."
 # Was just $@
 eval "$@"
 exit_value=$?
-echo "xvfb-daemon-run | Command '$@' exited with status ${exit_value}."
+echo_log "Command '$@' exited with status ${exit_value}."
 
-echo "xvfb-daemon-run | Stopping xvfb..."
+echo_log "Stopping xvfb..."
 /etc/init.d/xvfb stop
-echo "xvfb-daemon-run | xvfb stopped."
+echo_log "xvfb stopped."
 
-echo "xvfb-daemon-run | Exiting with code ${exit_value}."
+echo_log "Exiting with code ${exit_value}."
 exit $exit_value
