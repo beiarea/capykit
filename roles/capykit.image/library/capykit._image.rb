@@ -190,6 +190,18 @@ class CapykitImageGetArgs < QB::Ansible::Module
   #       the module will exit successfully.
   #       
   def main
+    QB::Docker::Image.ensure \
+      name: image_name,
+      pull: !image_version.dev?,
+      build: {
+        path: path,
+        args: {
+          from_image: from_image.string,
+          image_version: image_version.semver,
+        },
+      },
+      force: force?
+    
     response[:image] = {
       name: image_name,
       version: image_version,
@@ -199,13 +211,13 @@ class CapykitImageGetArgs < QB::Ansible::Module
       response.facts[fact_name] = response[:image]
     end
     
-    # Don't push dev images
-    response[:push] = !image_version.dev?
-    
-    # Don't try to pull dev images, we shouldn't ever have pushed any
-    response[:try_to_pull] = !image_version.dev?
-    
-    response[:force] = force?
+    # # Don't push dev images
+    # response[:push] = !image_version.dev?
+    # 
+    # # Don't try to pull dev images, we shouldn't ever have pushed any
+    # response[:try_to_pull] = !image_version.dev?
+    # 
+    # response[:force] = force?
     
     return nil
   end # #main

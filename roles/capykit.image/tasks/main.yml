@@ -10,7 +10,8 @@
 
 - name: >-
     Get args
-  capykit.image.get_args:
+# capykit.image.get_args:
+  capykit._image:    
     
     path: >-
       {{ capykit_path }}
@@ -23,34 +24,34 @@
   
   register: capykit_image_args
 
-
-- name: >-
-    Ensure image `{{ capykit_image_args.image.name.string }}` is present
-    
-  qb_docker_image:
-    
-    name: >-
-      {{ capykit_image_args.image.name.string }}
-    
-    path: >-
-      {{ capykit_path }}
-    
-    buildargs:
-      workdir: /app/beiarea/capykit
-      
-      from_image: >-
-        {{ capykit_image_from.string }}
-        
-      image_version: >-
-        {{ capykit_image_args.image.version.semver }}
-        
-    # /buildargs
-    
-    try_to_pull: >-
-      {{ capykit_image_args.try_to_pull }}
-      
-    push: >-
-      {{ capykit_image_args.push }}
-      
-    force: >-
-      {{ capykit_image_force or capykit_image_args.force }}
+# 
+# - name: >-
+#     Ensure image `{{ capykit_image_args.image.name.string }}` is present
+# 
+#   qb_docker_image:
+# 
+#     name: >-
+#       {{ capykit_image_args.image.name.string }}
+# 
+#     path: >-
+#       {{ capykit_path }}
+# 
+#     buildargs:
+#       workdir: /app/beiarea/capykit
+# 
+#       from_image: >-
+#         {{ capykit_image_from.string }}
+# 
+#       image_version: >-
+#         {{ capykit_image_args.image.version.semver }}
+# 
+#     # /buildargs
+# 
+#     try_to_pull: >-
+#       {{ capykit_image_args.try_to_pull }}
+# 
+#     push: >-
+#       {{ capykit_image_args.push }}
+# 
+#     force: >-
+#       {{ capykit_image_force or capykit_image_args.force }}
