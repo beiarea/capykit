@@ -1,0 +1,64 @@
+---
+##############################################################################
+# QB metadata for `capykit.image` role.
+# 
+# QB settings for this role.
+# 
+# @see http://www.rubydoc.info/gems/qb/file/doc/qb_roles/metadata.md
+#
+##############################################################################
+
+# Shown in help output, etc.
+description: >-
+  Ensure capykit image exists locally for the provided build config
+
+# Gemspec-style requirements. Right now only `.gems.qb` is used.
+requirements:
+  gems:
+    # Role options taking advantage of the {NRSER::Types} system require
+    # QB 0.4.
+    # 
+    # TODO  Change this to `>= 0.4.0` when 0.4.0 is released.
+    # 
+    qb: '>= 0.4.0.dev'
+
+# Prefix for role variables
+var_prefix: capykit_image
+
+# How to get a default for `DIRECTORY` arg if not provided by user.
+# 
+# @see http://www.rubydoc.info/gems/qb/file/doc/qb_roles/metadata/default_dir.md
+# 
+default_dir: false # means use *must* provide `DIRECTORY` arg
+
+# If `true`, QB will ensure `DIRECTORY` exists before starting the play.
+mkdir: false
+
+# Default user to become for play
+default_user: null
+
+# Save options in `.qb-options.yml` files
+save_options: true
+
+# Options to pass to `ansible-playbook`
+ansible_options: {}
+
+# Role CLI options that become Ansible vars
+options:
+# - name: example
+#   description: an example of a variable.
+#   required: false
+#   type: boolean # boolean (default) | string
+#   short: e
+
+- name: from
+  short: i
+  description: Name-tag of Docker FROM image
+  required: true
+  type: QB::Docker::Image::Name
+
+- name: force
+  description: >-
+    DANGER Force build or load *and* push of image!
+  required: false
+  type: boolean

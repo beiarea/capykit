@@ -1,0 +1,11 @@
+---
+##############################################################################
+# Variable defaults for `capykit.image` role
+#
+# @see http://docs.ansible.com/ansible/latest/playbooks_reuse_roles.html#role-default-variables
+# 
+##############################################################################
+
+capykit_image_fact_name: null
+
+capykit_image_force: false
