@@ -8,10 +8,21 @@
       {{ role_path | path_resolve( '..', '..' ) }}
 
 
+- debug:
+    msg:
+      path: >-
+        {{ capykit_path }}
+        
+      from_image: >-
+        {{ capykit_image_from }}
+        
+      fact_name: >-
+        {{ capykit_image_fact_name }}
+
 - name: >-
     Get args
 # capykit.image.get_args:
-  capykit._image:    
+  capykit._image:
     
     path: >-
       {{ capykit_path }}
