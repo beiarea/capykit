@@ -8,20 +8,9 @@
       {{ role_path | path_resolve( '..', '..', '..' ) }}
 
 
-- debug:
-    msg:
-      path: >-
-        {{ capykit_path }}
-        
-      from_image: >-
-        {{ capykit_image_from }}
-        
-      fact_name: >-
-        {{ capykit_image_fact_name }}
-
 - name: >-
-    Get args
-# capykit.image.get_args:
+    Ensure `capykit` image is present
+    (based off `{{ capykit_image_from.string }}`)
   capykit._image:
     
     path: >-
@@ -34,35 +23,3 @@
       {{ capykit_image_fact_name }}
   
   register: capykit_image_args
-
-# 
-# - name: >-
-#     Ensure image `{{ capykit_image_args.image.name.string }}` is present
-# 
-#   qb_docker_image:
-# 
-#     name: >-
-#       {{ capykit_image_args.image.name.string }}
-# 
-#     path: >-
-#       {{ capykit_path }}
-# 
-#     buildargs:
-#       workdir: /app/beiarea/capykit
-# 
-#       from_image: >-
-#         {{ capykit_image_from.string }}
-# 
-#       image_version: >-
-#         {{ capykit_image_args.image.version.semver }}
-# 
-#     # /buildargs
-# 
-#     try_to_pull: >-
-#       {{ capykit_image_args.try_to_pull }}
-# 
-#     push: >-
-#       {{ capykit_image_args.push }}
-# 
-#     force: >-
-#       {{ capykit_image_force or capykit_image_args.force }}
