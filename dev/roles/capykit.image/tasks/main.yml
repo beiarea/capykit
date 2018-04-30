@@ -5,7 +5,7 @@
 
 - set_fact:
     capykit_path: >-
-      {{ role_path | path_resolve( '..', '..' ) }}
+      {{ role_path | path_resolve( '..', '..', '..' ) }}
 
 
 - debug:
