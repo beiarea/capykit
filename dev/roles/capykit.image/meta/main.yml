@@ -5,5 +5,5 @@
 
 allow_duplicates: no
 
-dependencies:
-- role: qb/docker/image
+dependencies: []
+# - role: role_name

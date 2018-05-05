@@ -11,15 +11,18 @@
 - name: >-
     Ensure `capykit` image is present
     (based off `{{ capykit_image_from.string }}`)
-  capykit._image:
-    
-    path: >-
-      {{ capykit_path }}
+  qb.module:
+    name: docker/image
+    args:
+      name: beiarea/capykit
       
-    from_image: >-
-      {{ capykit_image_from }}
-      
-    fact_name: >-
-      {{ capykit_image_fact_name }}
+      path: >-
+        {{ capykit_path }}
+        
+      from_image: >-
+        {{ capykit_image_from }}
+        
+      fact_name: >-
+        {{ capykit_image_fact_name }}
   
   register: capykit_image_args
