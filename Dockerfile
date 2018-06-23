@@ -138,7 +138,7 @@ ARG image_name="capykit"
 ARG image_version
 
 # Uses a different workfir by default from the source we adapted it from
-ARG workdir="/usr/src/app"
+ARG workdir="/app/${image_order}/${image_name}"
 WORKDIR "${workdir}"
 
 # Bind the args to env vars.
@@ -155,14 +155,8 @@ ENV WORKDIR="${workdir}" \
 # Adds ability to run xvfb in daemonized mode
 ADD xvfb_init /etc/init.d/xvfb
 RUN chmod a+x /etc/init.d/xvfb
-ADD xvfb-daemon-run /usr/bin/xvfb-daemon-run
-RUN chmod a+x /usr/bin/xvfb-daemon-run
 
 
 # Write version into VERSION file so it's always consistent with the build
-RUN echo -n "${image_version}" > "./VERSION"
-
-
-# WARNING!  This script is... problematic as a general entry point. It won't
-#           
-ENTRYPOINT ["/usr/bin/xvfb-daemon-run"]
+RUN echo -n "${image_version}" > "./VERSION"; \
+    echo -n "${from_image}" > "./FROM_IMAGE"

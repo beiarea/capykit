@@ -1,4 +1,26 @@
 #!/bin/bash
+# 
+# NOTE
+#   This was originally added (and mounted) at
+#   
+#       /usr/bin/xvfb-daemon-run
+#   
+#   and used as the Docker ENTRYPOINT
+#   
+#       ENTRYPOINT ["/usr/bin/xvfb-daemon-run"]
+#   
+#   where it acted like a wrapper, starting `xvfb` and then invoking the
+#   target command.
+#   
+#   However, it never worked that great, and `xvfb` had a tendency to crash,
+#   which did not result in the container going down and being restarted, nor
+#   should it, since `xvfb` could just be restarted.
+#   
+#   As of 2018.06.23 I've removed it, and will be starting `xvfb` as part of
+#   prepping to run test suites.
+#   
+#   I'm keeping it around here for the moment for reference.
+# 
 
 set -e
 
@@ -11,7 +33,7 @@ echo_log "Entering..."
 export DISPLAY=:99
 
 # Seems like previous runs in the container that did not shut down properly
-# can leave `/var/xvfb_*.pid` files that will silently prevent the server 
+# can leave `/var/xvfb_*.pid` files that will silently prevent the server
 # from starting up on the next run.
 # 
 echo_log "Clearing out any left-over /var/xvfb_*.pid files..."
